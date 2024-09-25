@@ -5,9 +5,6 @@ function [valueAtRisk, systemLoad, systemCapacity, componentCapacity] = riskEsti
 componentCapacity = zeros(length(dataBase.systemComponentsInformation.componentID), dataBase.simulationParameters.simulationWindow);
 % stochastic capacity estimation for each component
 % simulate independent random values
-% setting values of dependecies to zero, compatibility with the other functions
-flagCopula = 0;
-marginal = 0;
 % estimating the stochastic availability
 for k = 1:length(dataBase.systemComponentsInformation.componentID)
     [componentCapacity(k, :)] = componentCapacityEstimation(dataBase.systemComponentsInformation.componentType(k), maintenanceScheduling(k), dataBase.systemComponentsInformation.durationFirstMaintenance(k), timeOperationBetweenMaintenance(k, :), timeDurationMaintenance(k, :), dataBase.systemComponentsInformation.pdObjectFail(k), dataBase.systemComponentsInformation.pdObjectRepair(k), dataBase.systemComponentsInformation.componentParameters{k}, dataBase.simulationParameters.simulationWindow);

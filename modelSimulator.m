@@ -48,7 +48,7 @@ x = [5544 5208 2184 1008 1008 5544 5208 2856 2184 6384 4536 3528 2184 1344 504 3
 % risk indicator estimation without variance reduction
 % simulation function
 tic
-dataBase.simulationParameters.simulationError = 0.01;
+%dataBase.simulationParameters.simulationError = 0.01;
 %dataBase.simulationParameters.simulationWindow = 8736;
 [fval_1] = simulation(x, dataBase);
 toc
