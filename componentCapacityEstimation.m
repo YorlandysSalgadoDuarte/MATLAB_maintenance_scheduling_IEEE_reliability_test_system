@@ -1,4 +1,6 @@
 function [componentCapacity] = componentCapacityEstimation(componentType, maintenanceScheduling, durationFirstMaintenance, timeOperationBetweenMaintenance, timeDurationMaintenance, pdObjectFail, pdObjectRepair, componentParameters, simulationWindow)
+% this function estimate the stochastic capacity of the unit
+% code start here the code %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % data type validation
 validateComponentType(componentType)
 % remove the zeros in the maintenance structure
@@ -11,10 +13,10 @@ timeDurationMaintenance = [durationFirstMaintenance, timeDurationMaintenance];
 timeToFailChain = zeros(1, simulationWindow);
 timeToRepairChain = zeros(1, simulationWindow);
 for k = 1:simulationWindow
-    % failures case 
+    % failures case
     % random independent samples from pd object
     timeToFail = random(pdObjectFail{1, 1}, 1, 1);
-    
+
     % repairs case
     % random independent samples from pd object
     timeToRepair = random(pdObjectRepair{1, 1}, 1, 1);
@@ -52,23 +54,14 @@ maintenance = maintenance(1:simulationWindow);
 
 switch componentType
     case "Wind"
-        % estimating the wind speed with Weibull distribution
-        [windSpeed] = windSpeedWeibullDistribution(simulationWindow, componentParameters.windAverage, componentParameters.windStandardDeviation);
-        
-        % estimating wind power
-        windPower = zeros(1, length(windSpeed));
-        for k = 1:length(windSpeed)
-            [windPowerOutput] = windPowerTurbine(windSpeed(k), componentParameters.nominalPower, componentParameters.startWind, componentParameters.nominalWind, componentParameters.cutWind);
-            windPower(k) = windPowerOutput;
-        end
-        % allocating the wind power in a variable
-        capacity = windPower;
-        
+        [capacity] = windPowerUnit(simulationWindow, componentParameters);
+
     case {"OilSteam", "OilCT", "CoalSteam", "Nuclear", "Hydro"}
-        capacity = ones(1, simulationWindow) * componentParameters.nominalPower;
-    
+        [capacity] = thermalPowerUnit(simulationWindow, componentParameters);
+
     otherwise
         disp("no supported component")
 end
 componentCapacity = capacity .* and(degradation, maintenance);
 end
+% code ends here %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

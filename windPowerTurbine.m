@@ -1,11 +1,11 @@
 function [windPower] = windPowerTurbine(windSpeed, nominalPower, startWind, nominalWind, cutWind)
 % this function estimate the wind power
 % inputs:
-% 1. windSpeed: random wind speed number simulated with Weibull distribution (m/s)
+% 1. windSpeed: random wind speed number simulated with Weibull distribution (km/h)
 % 2. nominalPower: nominal power of the wind turbine (MW)
-% 3. startWind: minimum wind needed to start the turbine (m/s)
-% 4. nominalWind: nominal wind ot get the nominal capacity of the turbine (m/s)
-% 5. cutWind: for safety reasons, wind value for which the turbine should stop (m/s)
+% 3. startWind: minimum wind needed to start the turbine (km/h)
+% 4. nominalWind: nominal wind ot get the nominal capacity of the turbine (km/h)
+% 5. cutWind: for safety reasons, wind value for which the turbine should stop (km/h)
 
 % output:
 % 1. windPower: power delivered by a given wind speed (MW)

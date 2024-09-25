@@ -10,7 +10,7 @@ inputFiles = fullfile(pwd, "inputData");
 % 2. dataBaseIEEE_RTS_02: Maintenance scheduling with dispersion
 % 3. dataBaseIEEE_RTS_03: Maintenance scheduling with dispersion and wind farms
 % to be selected
-databaseName = "dataBaseIEEE_RTS_01.mat";
+databaseName = "dataBaseIEEE_RTS_03.mat";
 structure = load(fullfile(inputFiles, databaseName));
 dataBase = structure.dataBase; clear structure inputFiles
 % start the optimization process
