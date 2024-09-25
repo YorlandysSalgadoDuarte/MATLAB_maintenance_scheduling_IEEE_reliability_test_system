@@ -1,3 +1,5 @@
+This code has been developed for academic purposes only, using MATLAB '24.1.0.2689473 (R2024a) Update 6' under an academic license.
+
 There are 5 MATLAB scripts to run the implemented solution.
 Four of them are optimization algorithms. We advise only changing the "databaseName" to be used. The implementation also considers a dynamic plot showing the solution performance; however, when the optimization is running, we advise ignoring the dynamic plot because the convergency plot window overlaps the dynamic window.
 Before running any optimization algorithm, open the function "simulation", and comment the lines 29, 38, and 39.
