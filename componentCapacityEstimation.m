@@ -1,4 +1,4 @@
-function [componentCapacity] = componentCapacityEstimation(componentType, maintenanceScheduling, durationFirstMaintenance, timeOperationBetweenMaintenance, timeDurationMaintenance, pdObjectFail, pdObjectRepair, componentParameters, simulationWindow)
+function [componentCapacity] = componentCapacityEstimation(windRandomValuesData, componentID, componentType, maintenanceScheduling, durationFirstMaintenance, timeOperationBetweenMaintenance, timeDurationMaintenance, pdObjectFail, pdObjectRepair, componentParameters, simulationWindow)
 % this function estimate the stochastic capacity of the unit
 % code start here the code %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % data type validation
@@ -8,7 +8,7 @@ timeOperationBetweenMaintenance(timeOperationBetweenMaintenance == 0) = [];
 timeOperationBetweenMaintenance = [maintenanceScheduling, timeOperationBetweenMaintenance];
 timeDurationMaintenance(timeDurationMaintenance == 0) = [];
 timeDurationMaintenance = [durationFirstMaintenance, timeDurationMaintenance];
-% stochastics simulation of failures and repair time
+% stochastic simulation of failures and repair time
 % allocating for memory
 timeToFailChain = zeros(1, simulationWindow);
 timeToRepairChain = zeros(1, simulationWindow);
@@ -21,7 +21,7 @@ for k = 1:simulationWindow
     % random independent samples from pd object
     timeToRepair = random(pdObjectRepair{1, 1}, 1, 1);
 
-    % criterial for the simulation windows
+    % criteria for the simulation windows
     timeToFailChain(1, k) = ceil(timeToFail);
     timeToRepairChain(1, k) = ceil(timeToRepair);
     if sum(sum(timeToFailChain) + sum(timeToRepairChain)) >= simulationWindow
@@ -54,8 +54,10 @@ maintenance = maintenance(1:simulationWindow);
 
 switch componentType
     case "Wind"
-        [capacity] = windPowerUnit(simulationWindow, componentParameters);
-
+        % filter the random values using the ID of the component simulated.
+        uniformRandomValues = windRandomValuesData.Var2(windRandomValuesData.Var1 == componentID, :);
+        % uniformRandomValues = [];
+        [capacity] = windPowerUnit(simulationWindow, componentParameters, uniformRandomValues);
     case {"OilSteam", "OilCT", "CoalSteam", "Nuclear", "Hydro"}
         [capacity] = thermalPowerUnit(simulationWindow, componentParameters);
 

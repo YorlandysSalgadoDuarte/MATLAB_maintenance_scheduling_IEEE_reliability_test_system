@@ -1,7 +1,7 @@
 function y = simulation(x, dataBase)
 x = round(x); % rounding the value
 maintenanceScheduling = x'; % shaping format
-% initial parameters, maintenence parameters, units
+% initial parameters, maintenance parameters, units
 % initialization of maintenance data, allocate for speed
 timeOperationBetweenMaintenance = zeros(length(dataBase.systemComponentsInformation.componentID), dataBase.simulationParameters.maxNumberOfMaintenance);
 timeDurationMaintenance = zeros(length(dataBase.systemComponentsInformation.componentID), dataBase.simulationParameters.maxNumberOfMaintenance);
@@ -21,12 +21,12 @@ stdRisk = zeros(1, dataBase.simulationParameters.maxNumberOfSimulations);
 rng("default") % control random number generation
 for s = 1:dataBase.simulationParameters.maxNumberOfSimulations
     [valueAtRisk, systemLoad, systemCapacity, ~] = riskEstimation(maintenanceScheduling, timeOperationBetweenMaintenance, timeDurationMaintenance, dataBase); % risk estimation: convolution
-    risk(1, s) = sum(valueAtRisk); % risk vector estimation, MWh/yr
+    risk(1, s) = sum(valueAtRisk); % risk vector estimation, MW h/yr
     meanRisk(1, s) = mean(risk(1, 1:s)); % risk value
     stdRisk(1, s) = std(risk(1, 1:s)); % variability of the risk estimation
     error = stdRisk(1, s) / (meanRisk(1, s) * sqrt(s)); % error of the risk estimation
     expectedEnergyNotSupplied = meanRisk(1, s); % allocate the value of the risk in a new variable
-    [~] = plotSystem(s, risk, meanRisk, expectedEnergyNotSupplied, error, dataBase.simulationParameters.simulationWindow, systemLoad, systemCapacity); % dynamic plot window
+    % [~] = plotSystem(s, risk, meanRisk, expectedEnergyNotSupplied, error, dataBase.simulationParameters.simulationWindow, systemLoad, systemCapacity); % dynamic plot window
     % initialization and control error
     % disp(s); disp(error); disp(risk(1, s)); disp(expectedEnergyNotSupplied)
     if s ~= 1 && s >= dataBase.simulationParameters.minNumberOfSimulations && stdRisk(1, s) / (meanRisk(1, s) * sqrt(s)) <= dataBase.simulationParameters.simulationError
@@ -35,8 +35,8 @@ for s = 1:dataBase.simulationParameters.maxNumberOfSimulations
 end
 % finish the loop of the simulation
 % plot with the scheduling
-plotWindow = [0 dataBase.simulationParameters.plotSimulationWindow]; % defining the plot windows
-[~] = schedulingPlots(x, dataBase.systemComponentsInformation.componentID, dataBase.systemComponentsInformation.durationFirstMaintenance, dataBase.systemComponentsInformation.timeOperationBetweenMaintenance, dataBase.systemComponentsInformation.timeDurationMaintenance, plotWindow, expectedEnergyNotSupplied, error); % ploting the results
+% plotWindow = [0 dataBase.simulationParameters.plotSimulationWindow]; % defining the plot windows
+% [~] = schedulingPlots(x, dataBase.systemComponentsInformation.componentID, dataBase.systemComponentsInformation.durationFirstMaintenance, dataBase.systemComponentsInformation.timeOperationBetweenMaintenance, dataBase.systemComponentsInformation.timeDurationMaintenance, plotWindow, expectedEnergyNotSupplied, error); % plotting the results
 y = expectedEnergyNotSupplied; % indicator to evaluate the scenario, optimization target
 % finish the scenario
 end

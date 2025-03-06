@@ -1,4 +1,4 @@
-function [windSpeed] = windSpeedWeibullDistribution(simulationWindow, windAverage, windStandardDeviation)
+function [windSpeed, simulationWindow] = windSpeedWeibullDistribution(simulationWindow, windAverage, windStandardDeviation, uniformRandomValues)
 % this function estimate the wind speed
 % inputs:
 % 0. simulationWindow: window of the simulation
@@ -13,7 +13,11 @@ function [windSpeed] = windSpeedWeibullDistribution(simulationWindow, windAverag
 shape = (windStandardDeviation / windAverage).^(-1.086);
 scale = windAverage / gamma(1 + (1 / shape));
 % simulating the wind Weibull distribution
-windSpeed = random('Weibull', scale, shape, 1, simulationWindow);
+% simulate correlated random values because the random vector is given.
+pd = makedist('Weibull', scale, shape);
+windSpeed = icdf(pd, uniformRandomValues);
+% simulate random independent values.
+% windSpeed = random('Weibull', scale, shape, 1, simulationWindow);
 % avoid negative values
 windSpeed = max(windSpeed, 0);
 end
