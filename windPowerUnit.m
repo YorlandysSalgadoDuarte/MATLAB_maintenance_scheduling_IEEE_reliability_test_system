@@ -1,14 +1,14 @@
-function [capacity] = windPowerUnit(simulationWindow, componentParameters)
+function [capacity] = windPowerUnit(simulationWindow, componentParameters, uniformRandomValues)
 % this function estimate the power capacity of the wind farm unit
 % inputs:
 % 0. simulationWindow: window of the simulation
 % 1. componentParameters: structure including all parameters
-    % 1.1. nominalPower: nominal power of the wind turbine (MW)
-    % 1.2. startWind: minimum wind needed to start the turbine (km/h)
-    % 1.3. nominalWind: nominal wind ot get the nominal capacity of the turbine (km/h)
-    % 1.4. cutWind: for safety reasons, wind value for which the turbine should stop (km/h)
-    % 1.5. windAverage: historical average of the wind (km/h)
-    % 1.6. windStandardDeviation: historical deviation of the wind (km/h)
+% 1.1. nominalPower: nominal power of the wind turbine (MW)
+% 1.2. startWind: minimum wind needed to start the turbine (km/h)
+% 1.3. nominalWind: nominal wind ot get the nominal capacity of the turbine (km/h)
+% 1.4. cutWind: for safety reasons, wind value for which the turbine should stop (km/h)
+% 1.5. windAverage: historical average of the wind (km/h)
+% 1.6. windStandardDeviation: historical deviation of the wind (km/h)
 
 % output:
 % 1. capacity: simulated power delivered (MW/h)
@@ -16,7 +16,7 @@ function [capacity] = windPowerUnit(simulationWindow, componentParameters)
 % code start here the code %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % estimating the wind speed with Weibull distribution
-[windSpeed] = windSpeedWeibullDistribution(simulationWindow, componentParameters.windAverage, componentParameters.windStandardDeviation);
+[windSpeed, ~] = windSpeedWeibullDistribution(simulationWindow, componentParameters.windAverage, componentParameters.windStandardDeviation, uniformRandomValues);
 
 % estimating wind power
 windPower = zeros(1, length(windSpeed));
